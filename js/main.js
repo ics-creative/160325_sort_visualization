@@ -61,8 +61,8 @@ var demo;
         };
         Main.prototype.onSelect = function (event) {
             this.shuffleArray(this.datas);
-            this.shuffleArray(this.datas);
-            this.shuffleArray(this.datas);
+            //this.shuffleArray(this.datas);
+            //this.shuffleArray(this.datas);
             switch (this.selectBox.selectedIndex) {
                 case 0:
                     this.bubbleSort();
@@ -74,7 +74,7 @@ var demo;
                     this.insertionSort();
                     break;
                 case 3:
-                    //this.currentRandomFunc = this.calcSquareRandom;
+                    this.selectionSort();
                     break;
                 case 4:
                     //this.currentRandomFunc = this.calcSqrtRandom;
@@ -159,6 +159,22 @@ var demo;
                         this.swapData(this.datas, j, j - 1);
                         j--;
                     }
+                    this.currentSortStep++;
+                }
+            };
+        };
+        Main.prototype.selectionSort = function () {
+            // 選択ソート
+            this.currentSortStep = 0;
+            this.currentSortLoopFunc = function () {
+                if (this.currentSortStep < this.datas.length - 1) {
+                    var smallIndex = this.currentSortStep;
+                    for (var j = this.currentSortStep; j < this.datas.length; ++j) {
+                        if (this.datas[j] < this.datas[smallIndex]) {
+                            smallIndex = j;
+                        }
+                    }
+                    this.swapData(this.datas, this.currentSortStep, smallIndex);
                     this.currentSortStep++;
                 }
             };

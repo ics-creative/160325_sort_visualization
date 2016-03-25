@@ -85,8 +85,8 @@ namespace demo {
 
 		private onSelect(event:any):void {
 			this.shuffleArray(this.datas);
-			this.shuffleArray(this.datas);
-			this.shuffleArray(this.datas);
+			//this.shuffleArray(this.datas);
+			//this.shuffleArray(this.datas);
 			switch (this.selectBox.selectedIndex) {
 				case 0:
 					this.bubbleSort();
@@ -98,7 +98,7 @@ namespace demo {
 					this.insertionSort();
 					break;
 				case 3:
-					//this.currentRandomFunc = this.calcSquareRandom;
+					this.selectionSort();
 					break;
 				case 4:
 					//this.currentRandomFunc = this.calcSqrtRandom;
@@ -191,6 +191,23 @@ namespace demo {
 						this.swapData(this.datas, j, j - 1);
 						j--;
 					}
+					this.currentSortStep++;
+				}
+			};
+		}
+
+		private selectionSort():void {
+			// 選択ソート
+			this.currentSortStep = 0;
+			this.currentSortLoopFunc = function():void {
+				if (this.currentSortStep < this.datas.length - 1) {
+					var smallIndex:number = this.currentSortStep;
+					for (var j = this.currentSortStep; j < this.datas.length; ++j) {
+						if (this.datas[j] < this.datas[smallIndex]) {
+							smallIndex = j;
+						}
+					}
+					this.swapData(this.datas, this.currentSortStep, smallIndex);
 					this.currentSortStep++;
 				}
 			};
