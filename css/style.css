@@ -1,0 +1,88 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */
+    align-items: center; /* 縦方向中央揃え */
+    -webkit-justify-content: center; /* 横方向中央揃え（Safari用） */
+    justify-content: center; /* 横方向中央揃え */
+
+    background: #222;
+}
+
+.graff {
+    width: 960px;
+    height: 540px;
+    background-image: url("../images/graph.png");
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+#myCanvas {
+    position: absolute;
+    top: 18px;
+    left: 280px;
+    width: 480px;
+    height: 480px;
+}
+
+div#ui {
+    position: absolute;
+    bottom: 64px;
+    line-height: 64px;
+    width: 100%;
+    user-select: none; /* CSS3 */
+    -moz-user-select: none; /* Firefox */
+    -webkit-user-select: none; /* Safari、Chromeなど */
+    -ms-user-select: none; /* IE10かららしい */
+    z-index: 100;
+}
+
+div#btnPrev, div#btnNext {
+    position: absolute;
+    top: 0;
+    width: 64px;
+    height: 64px;
+    background: #3498db;
+    color: #FFF;
+    font-size: 200%;
+    text-align: center;
+    cursor: pointer;
+}
+
+div#btnNext:active, div#btnPrev:active {
+    background: #2980b9;
+}
+
+div#btnNext {
+    right: 0px;
+}
+
+div#btnPrev {
+    left: 0px;
+}
+
+div#numParticle {
+    font-size: 200%;
+    color: #fff;
+    background: #34495e;
+    width: 100%;
+    height: 64px;
+    position: absolute;
+    left: 0px;
+    top: 0;
+    text-align: center;
+}
+
+#selectBox {
+    zoom: 2;
+}
