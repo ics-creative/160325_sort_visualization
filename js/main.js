@@ -43,10 +43,11 @@ var demo;
             this.graphContainer = new createjs.Container();
             this.stage.addChild(this.graphContainer);
             this.datas = [];
-            for (var i = 0; i < 400; i++) {
+            for (var i = 0; i < Main.DATA_NUM; i++) {
                 this.datas[i] = i;
             }
             this.createMarkers();
+            //createjs.Ticker.setFPS(10);
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
             createjs.Ticker.addEventListener("tick", function () {
                 _this.handleTick();
@@ -193,23 +194,20 @@ var demo;
             for (var i = 0; i < this.datas.length; i++) {
                 var marker = new createjs.Shape();
                 marker.graphics
-                    .beginFill(createjs.Graphics.getHSL(300 * i / Main.GRAPH_WIDTH, 100, 50 + 10 * i / Main.GRAPH_WIDTH))
-                    .drawRect(-2, -2, 4, 4 /*i*/)
-                    .endFill()
-                    .beginFill(createjs.Graphics.getHSL(300 * i / Main.GRAPH_WIDTH, 100, 50, 0.2))
-                    .drawRect(-6, -6, 12, 12)
+                    .beginFill(createjs.Graphics.getHSL(300 * i / Main.DATA_NUM, 100, 60))
+                    .drawRect(0, 0, Main.GRAPH_WIDTH / Main.DATA_NUM, i * Main.GRAPH_HEIGHT / Main.DATA_NUM)
                     .endFill();
                 this._markerList.push(marker);
                 this.graphContainer.addChild(marker);
-                marker.x = this.datas[i];
-                marker.y = Main.GRAPH_HEIGHT - i;
+                marker.x = this.datas[i] * Main.GRAPH_WIDTH / Main.DATA_NUM;
+                marker.y = Main.GRAPH_HEIGHT - i * Main.GRAPH_HEIGHT / Main.DATA_NUM;
             }
         };
         Main.prototype.updateMarkers = function () {
             var length = this.datas.length;
             for (var i = 0; i < length; i++) {
-                var marker = this._markerList[i];
-                marker.x = this.datas[i];
+                var marker = this._markerList[this.datas[i]];
+                marker.x = i * Main.GRAPH_WIDTH / Main.DATA_NUM;
             }
         };
         //
@@ -221,6 +219,7 @@ var demo;
             this.datas[i] = this.datas[j];
             this.datas[j] = tmp;
         };
+        Main.DATA_NUM = 400;
         Main.GRAPH_WIDTH = 400;
         Main.GRAPH_HEIGHT = 400;
         return Main;

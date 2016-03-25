@@ -13,6 +13,7 @@ namespace demo {
 	 */
 	class Main {
 
+		static DATA_NUM:number = 400;
 		static GRAPH_WIDTH:number = 400;
 		static GRAPH_HEIGHT:number = 400;
 
@@ -62,11 +63,12 @@ namespace demo {
 			this.stage.addChild(this.graphContainer);
 
 			this.datas = [];
-			for (let i:number = 0; i < 400; i++) {
+			for (let i:number = 0; i < Main.DATA_NUM; i++) {
 				this.datas[i] = i;
 			}
 			this.createMarkers();
 
+			//createjs.Ticker.setFPS(10);
 			createjs.Ticker.timingMode = createjs.Ticker.RAF;
 			createjs.Ticker.addEventListener("tick", () => {
 				this.handleTick();
@@ -233,24 +235,21 @@ namespace demo {
 			for (let i:number = 0; i < this.datas.length; i++) {
 				const marker:createjs.Shape = new createjs.Shape();
 				marker.graphics
-					.beginFill(createjs.Graphics.getHSL(300 * i / Main.GRAPH_WIDTH, 100, 50 + 10 * i / Main.GRAPH_WIDTH))
-					.drawRect(-2, -2, 4, 4/*i*/)
-					.endFill()
-					.beginFill(createjs.Graphics.getHSL(300 * i / Main.GRAPH_WIDTH, 100, 50, 0.2))
-					.drawRect(-6, -6, 12, 12)
+					.beginFill(createjs.Graphics.getHSL(300 * i / Main.DATA_NUM, 100, 60))
+					.drawRect(0, 0, Main.GRAPH_WIDTH / Main.DATA_NUM, i * Main.GRAPH_HEIGHT / Main.DATA_NUM)
 					.endFill()
 				this._markerList.push(marker);
 				this.graphContainer.addChild(marker);
-				marker.x = this.datas[i];
-				marker.y = Main.GRAPH_HEIGHT - i;
+				marker.x = this.datas[i] * Main.GRAPH_WIDTH / Main.DATA_NUM;
+				marker.y = Main.GRAPH_HEIGHT - i * Main.GRAPH_HEIGHT / Main.DATA_NUM;
 			}
 		}
 
 		private updateMarkers():void {
 			const length:number = this.datas.length;
 			for (let i:number = 0; i < length; i++) {
-				var marker:createjs.Shape = this._markerList[i]
-				marker.x = this.datas[i];
+				var marker:createjs.Shape = this._markerList[this.datas[i]];
+				marker.x = i * Main.GRAPH_WIDTH / Main.DATA_NUM;
 			}
 		}
 
