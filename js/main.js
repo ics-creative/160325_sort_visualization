@@ -7,7 +7,7 @@ var demo;
         new Main();
     });
     /**
-     * ランダムアルゴリズムの可視化デモのクラスです。
+     * ソートアルゴリズムの可視化デモのクラスです。
      */
     var Main = (function () {
         function Main() {
@@ -55,37 +55,45 @@ var demo;
             this.onSelect(null);
         };
         Main.prototype.handleTick = function () {
-            this.currentSortLoopFunc();
-            this.updateMarkers();
+            if (this.isSorting) {
+                if (this.currentSortLoopFunc) {
+                    this.currentSortLoopFunc();
+                }
+                this.updateMarkers();
+            }
             this.stage.update();
         };
         Main.prototype.onSelect = function (event) {
             this.shuffleArray(this.datas);
-            //this.shuffleArray(this.datas);
-            //this.shuffleArray(this.datas);
+            this.shuffleArray(this.datas);
+            this.shuffleArray(this.datas);
+            this.updateMarkers();
+            this.currentSortLoopFunc = null;
             switch (this.selectBox.selectedIndex) {
                 case 0:
                     this.bubbleSort();
                     break;
                 case 1:
-                    this.mergeSort();
-                    break;
-                case 2:
                     this.insertionSort();
                     break;
-                case 3:
+                case 2:
                     this.selectionSort();
                     break;
+                case 3:
+                    this.heapSort();
+                    break;
                 case 4:
-                    //this.currentRandomFunc = this.calcSqrtRandom;
+                    this.shellSort();
                     break;
                 case 5:
-                    //this.currentRandomFunc = this.calcNormalRandom;
+                    this.mergeSort();
+                    break;
+                case 6:
+                    this.quickSort();
                     break;
                 default:
                     break;
             }
-            this.updateMarkers();
             this.isSorting = true;
         };
         //
@@ -95,71 +103,33 @@ var demo;
             this.currentSortLoopFunc = function () {
                 var length = this.datas.length - 1;
                 if (this.currentSortStep < length) {
-                    for (var j = length; j > this.currentSortStep; j--) {
-                        if (this.datas[j - 1] > this.datas[j]) {
-                            this.swapData(this.datas, j - 1, j);
+                    for (var i = length; i > this.currentSortStep; i--) {
+                        if (this.datas[i - 1] > this.datas[i]) {
+                            this.swapData(this.datas, i - 1, i);
                         }
                     }
                     this.currentSortStep++;
                 }
-            };
-        };
-        Main.prototype.mergeSort = function () {
-            // マージソート
-            var regions = [];
-            var stack = [];
-            stack.push([0, this.datas.length]);
-            while (stack.length > 0) {
-                var top = stack.pop();
-                var first = top[0];
-                var last = top[1];
-                var middle = Math.floor((first + last) / 2);
-                if (last - first <= 1) {
-                    continue;
-                }
-                stack.push([first, middle]);
-                stack.push([middle, last]);
-                regions.push([first, last]);
-            }
-            this.currentSortStep = 0;
-            this.currentSortLoopFunc = function () {
-                if (regions.length > 0) {
-                    var top = regions.pop();
-                    var first = top[0];
-                    var last = top[1];
-                    var middle = Math.floor((first + last) / 2);
-                    var work = [];
-                    for (var i = first; i < middle; ++i) {
-                        work.push(this.datas[i]);
-                    }
-                    var i = first;
-                    var j = 0;
-                    var k = middle;
-                    while (j < middle - first && k < last) {
-                        if (work[j] <= this.datas[k]) {
-                            this.datas[i++] = work[j++];
-                        }
-                        else {
-                            this.datas[i++] = this.datas[k++];
-                        }
-                    }
-                    while (j < middle - first) {
-                        this.datas[i++] = work[j++];
-                    }
+                else {
+                    this.isSorting = false;
                 }
             };
         };
         Main.prototype.insertionSort = function () {
             // 挿入ソート
-            this.currentSortStep = 0;
+            this.currentSortStep = 1;
             this.currentSortLoopFunc = function () {
-                if (this.currentSortStep < this.datas.length) {
-                    var j = this.currentSortStep;
-                    while (j >= 1 && this.datas[j - 1] > this.datas[j]) {
-                        this.swapData(this.datas, j, j - 1);
-                        j--;
+                var length = this.datas.length;
+                if (this.currentSortStep < length) {
+                    var i = this.currentSortStep;
+                    while (this.datas[i - 1] > this.datas[i]) {
+                        this.swapData(this.datas, i, i - 1);
+                        i--;
                     }
                     this.currentSortStep++;
+                }
+                else {
+                    this.isSorting = false;
                 }
             };
         };
@@ -169,48 +139,168 @@ var demo;
             this.currentSortLoopFunc = function () {
                 if (this.currentSortStep < this.datas.length - 1) {
                     var smallIndex = this.currentSortStep;
-                    for (var j = this.currentSortStep; j < this.datas.length; ++j) {
-                        if (this.datas[j] < this.datas[smallIndex]) {
-                            smallIndex = j;
+                    var length_1 = this.datas.length;
+                    for (var i = this.currentSortStep + 1; i < length_1; i++) {
+                        if (this.datas[i] < this.datas[smallIndex]) {
+                            smallIndex = i;
                         }
                     }
                     this.swapData(this.datas, this.currentSortStep, smallIndex);
                     this.currentSortStep++;
                 }
+                else {
+                    this.isSorting = false;
+                }
             };
         };
-        Main.prototype.calcRandom = function () {
-            // 通常の乱数
-            var value = Math.random();
-            return value;
+        Main.prototype.heapSort = function () {
+            // ヒープソート
+            for (var i_1 = 0; i_1 < this.datas.length; ++i_1) {
+                if (this.datas[i_1] == 0) {
+                    this.swapData(this.datas, 0, i_1);
+                }
+            }
+            var n = this.datas.length - 1;
+            var i = Math.floor(n / 2);
+            var loop1 = function () {
+                if (i >= 1) {
+                    this.downHeap(this.datas, n, i);
+                    i--;
+                    this.currentSortLoopFunc = loop1;
+                }
+                else {
+                    this.currentSortLoopFunc = loop2;
+                }
+            };
+            var loop2 = function () {
+                if (n > 1) {
+                    this.swapData(this.datas, n, 1);
+                    n--;
+                    this.downHeap(this.datas, n, 1);
+                    this.currentSortLoopFunc = loop2;
+                }
+                else {
+                    this.isSorting = false;
+                }
+            };
+            this.currentSortLoopFunc = loop1;
         };
-        Main.prototype.calcAddRandom = function () {
-            // 加算の乱数
-            var value = (Math.random() + Math.random()) / 2;
-            return value;
+        Main.prototype.shellSort = function () {
+            // シェルソート
+            var h;
+            var length = Math.floor(this.datas.length / 9);
+            for (var i = 1; i < length; i = i * 3 + 1) {
+                h = i;
+            }
+            var loop1 = function () {
+                if (h > 0) {
+                    var i = h;
+                    var loop2 = function () {
+                        if (i < this.datas.length) {
+                            var j = i;
+                            while (j >= h && this.datas[j - h] > this.datas[j]) {
+                                this.swapData(this.datas, j, j - h);
+                                j -= h;
+                            }
+                            i++;
+                            this.currentSortLoopFunc = loop2;
+                        }
+                        else {
+                            h = Math.floor(h / 3);
+                            this.currentSortLoopFunc = loop1;
+                        }
+                    };
+                    this.currentSortLoopFunc = loop2;
+                }
+                else {
+                    this.isSorting = false;
+                }
+            };
+            this.currentSortLoopFunc = loop1;
         };
-        Main.prototype.calcMultiplyRandom = function () {
-            // 乗算の乱数
-            var value = Math.random() * Math.random();
-            return value;
+        Main.prototype.mergeSort = function () {
+            // マージソート
+            var regions = [];
+            var stack = [];
+            stack.push([0, this.datas.length]);
+            while (stack.length > 0) {
+                var top_1 = stack.pop();
+                var firstIndex = top_1[0];
+                var lastIndex = top_1[1];
+                var middleIndex = Math.floor((firstIndex + lastIndex) / 2);
+                if (lastIndex - firstIndex <= 1) {
+                    continue;
+                }
+                stack.push([firstIndex, middleIndex]);
+                stack.push([middleIndex, lastIndex]);
+                regions.push([firstIndex, lastIndex]);
+            }
+            this.currentSortStep = 0;
+            this.currentSortLoopFunc = function () {
+                if (regions.length > 0) {
+                    var top_2 = regions.pop();
+                    var firstIndex = top_2[0];
+                    var lastIndex = top_2[1];
+                    var middleIndex = Math.floor((firstIndex + lastIndex) / 2);
+                    var work = [];
+                    for (var i = firstIndex; i < middleIndex; ++i) {
+                        work.push(this.datas[i]);
+                    }
+                    var i = firstIndex;
+                    var j = 0;
+                    var k = middleIndex;
+                    while (j < middleIndex - firstIndex && k < lastIndex) {
+                        if (work[j] <= this.datas[k]) {
+                            this.datas[i++] = work[j++];
+                        }
+                        else {
+                            this.datas[i++] = this.datas[k++];
+                        }
+                    }
+                    while (j < middleIndex - firstIndex) {
+                        this.datas[i++] = work[j++];
+                    }
+                }
+                else {
+                    this.isSorting = false;
+                }
+            };
         };
-        Main.prototype.calcSquareRandom = function () {
-            // 2乗の乱数
-            var r = Math.random();
-            var value = r * r;
-            return value;
+        Main.prototype.quickSort = function () {
+            var _this = this;
+            this.currentSortLoopFunc = null;
+            this.quickSortCPS(0, this.datas.length, function () { _this.isSorting = false; });
         };
-        Main.prototype.calcSqrtRandom = function () {
-            // 平方根の乱数
-            var value = Math.sqrt(Math.random());
-            return value;
+        Main.prototype.quickSortCPS = function (beginIndex, endIndex, contFunc) {
+            var _this = this;
+            if (beginIndex >= endIndex) {
+                return contFunc();
+            }
+            var pivotIndex = beginIndex;
+            var pivot = this.datas[pivotIndex];
+            for (var i = beginIndex + 1; i < endIndex; i++) {
+                if (this.datas[i] < pivot) {
+                    var temp = this.datas[i];
+                    this.datas[i] = this.datas[pivotIndex + 1];
+                    this.datas[pivotIndex + 1] = this.datas[pivotIndex];
+                    this.datas[pivotIndex] = temp;
+                    pivotIndex++;
+                }
+            }
+            return this.quickSortCPS(beginIndex, pivotIndex, function () {
+                _this.currentSortLoopFunc = function () {
+                    _this.quickSortCPS(pivotIndex + 1, endIndex, function () {
+                        return contFunc();
+                    });
+                };
+            });
         };
         Main.prototype.createMarkers = function () {
             this._markerList = [];
             for (var i = 0; i < this.datas.length; i++) {
                 var marker = new createjs.Shape();
                 marker.graphics
-                    .beginFill(createjs.Graphics.getHSL(300 * i / Main.DATA_NUM, 100, 60))
+                    .beginFill(createjs.Graphics.getHSL(300 * i / Main.DATA_NUM, 60, 60))
                     .drawRect(0, 0, Main.GRAPH_WIDTH / Main.DATA_NUM, i * Main.GRAPH_HEIGHT / Main.DATA_NUM)
                     .endFill();
                 this._markerList.push(marker);
@@ -234,6 +324,21 @@ var demo;
             var tmp = this.datas[i];
             this.datas[i] = this.datas[j];
             this.datas[j] = tmp;
+        };
+        Main.prototype.downHeap = function (array, n, i) {
+            var j;
+            var x = array[i];
+            while ((j = i * 2) <= n) {
+                if (j + 1 <= n && array[j] < array[j + 1]) {
+                    j++;
+                }
+                if (array[j] <= x) {
+                    break;
+                }
+                array[i] = array[j];
+                i = j;
+            }
+            array[i] = x;
         };
         Main.DATA_NUM = 400;
         Main.GRAPH_WIDTH = 400;
