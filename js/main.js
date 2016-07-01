@@ -269,7 +269,9 @@ var demo;
         Main.prototype.quickSort = function () {
             var _this = this;
             this.currentSortLoopFunc = null;
-            this.quickSortCPS(0, this.datas.length, function () { _this.isSorting = false; });
+            this.quickSortCPS(0, this.datas.length, function () {
+                _this.isSorting = false;
+            });
         };
         Main.prototype.quickSortCPS = function (beginIndex, endIndex, contFunc) {
             var _this = this;
@@ -318,7 +320,9 @@ var demo;
         };
         //
         Main.prototype.shuffleArray = function (array) {
-            array.sort(function () { return Math.floor(Math.random() * 3) - 1; });
+            array.sort(function () {
+                return Math.floor(Math.random() * 3) - 1;
+            });
         };
         Main.prototype.swapData = function (array, i, j) {
             var tmp = this.datas[i];
