@@ -150,7 +150,7 @@ namespace demo {
             this.currentSortLoopFunc = function ():void {
                 const length = this.datas.length;
                 if (this.currentSortStep < length) {
-                    var i = this.currentSortStep;
+                    let i = this.currentSortStep;
                     while (this.datas[i - 1] > this.datas[i]) {
                         this.swapData(this.datas, i, i - 1);
                         i--;
@@ -170,7 +170,7 @@ namespace demo {
             this.currentSortStep = 0;
             this.currentSortLoopFunc = function ():void {
                 if (this.currentSortStep < this.datas.length - 1) {
-                    var smallIndex:number = this.currentSortStep;
+                    let smallIndex:number = this.currentSortStep;
                     const length = this.datas.length;
                     for (let i = this.currentSortStep + 1; i < length; i++) {
                         if (this.datas[i] < this.datas[smallIndex]) {
@@ -196,9 +196,9 @@ namespace demo {
                 }
             }
 
-            var n:number = this.datas.length - 1;
-            var i:number = Math.floor(n / 2);
-            var loop1:Function = function ():void {
+            let n:number = this.datas.length - 1;
+            let i:number = Math.floor(n / 2);
+            let loop1:Function = function ():void {
                 if (i >= 1) {
                     this.downHeap(this.datas, n, i);
                     i--;
@@ -208,7 +208,7 @@ namespace demo {
                 }
             }
 
-            var loop2:Function = function ():void {
+            let loop2:Function = function ():void {
                 if (n > 1) {
                     this.swapData(this.datas, n, 1);
                     n--;
@@ -227,18 +227,18 @@ namespace demo {
          * シェルソートです。
          */
         private shellSort() {
-            var h:number;
+            let h:number;
             const length:number = Math.floor(this.datas.length / 9);
             for (let i = 1; i < length; i = i * 3 + 1) {
                 h = i;
             }
 
-            var loop1:Function = function ():void {
+            let loop1:Function = function ():void {
                 if (h > 0) {
-                    var i:number = h;
-                    var loop2:Function = function ():void {
+                    let i:number = h;
+                    let loop2:Function = function ():void {
                         if (i < this.datas.length) {
-                            var j:number = i;
+                            let j:number = i;
                             while (j >= h && this.datas[j - h] > this.datas[j]) {
                                 this.swapData(this.datas, j, j - h);
                                 j -= h;
@@ -260,12 +260,11 @@ namespace demo {
         }
 
         /**
-         * ソートです。
+         * マージソートです。
          */
         private mergeSort() {
-            マー
-            var regions:number[][] = [];
-            var stack:number[][] = [];
+            let regions:number[][] = [];
+            let stack:number[][] = [];
             stack.push([0, this.datas.length]);
             while (stack.length > 0) {
                 let top:number[] = stack.pop();
@@ -288,14 +287,14 @@ namespace demo {
                     let lastIndex:number = top[1];
                     let middleIndex:number = Math.floor((firstIndex + lastIndex) / 2);
 
-                    var work:number[] = [];
-                    for (var i = firstIndex; i < middleIndex; ++i) {
+                    let work:number[] = [];
+                    for (let i = firstIndex; i < middleIndex; ++i) {
                         work.push(this.datas[i]);
                     }
 
-                    var i:number = firstIndex;
-                    var j:number = 0;
-                    var k:number = middleIndex;
+                    let i:number = firstIndex;
+                    let j:number = 0;
+                    let k:number = middleIndex;
                     while (j < middleIndex - firstIndex && k < lastIndex) {
                         if (work[j] <= this.datas[k]) {
                             this.datas[i++] = work[j++];
@@ -331,12 +330,12 @@ namespace demo {
                 return contFunc();
             }
 
-            var pivotIndex:number = beginIndex;
-            var pivot:number = this.datas[pivotIndex];
+            let pivotIndex:number = beginIndex;
+            let pivot:number = this.datas[pivotIndex];
 
             for (let i = beginIndex + 1; i < endIndex; i++) {
                 if (this.datas[i] < pivot) {
-                    var temp = this.datas[i];
+                    let temp = this.datas[i];
                     this.datas[i] = this.datas[pivotIndex + 1];
                     this.datas[pivotIndex + 1] = this.datas[pivotIndex];
                     this.datas[pivotIndex] = temp;
@@ -379,7 +378,7 @@ namespace demo {
         private updateMarkers():void {
             const length:number = this.datas.length;
             for (let i:number = 0; i < length; i++) {
-                var marker:createjs.Shape = this._markerList[this.datas[i]];
+                let marker:createjs.Shape = this._markerList[this.datas[i]];
                 marker.x = i * Main.GRAPH_WIDTH / Main.DATA_NUM;
             }
         }
@@ -397,7 +396,7 @@ namespace demo {
          * データを交換します。
          */
         private swapData(array:number[], i:number, j:number):void {
-            var tmp:number = this.datas[i];
+            let tmp:number = this.datas[i];
             this.datas[i] = this.datas[j];
             this.datas[j] = tmp;
         }
@@ -406,8 +405,8 @@ namespace demo {
          * データ列をヒープします。
          */
         private downHeap(array:number[], n:number, i:number) {
-            var j:number;
-            var x:number = array[i];
+            let j:number;
+            let x:number = array[i];
             while ((j = i * 2) <= n) {
                 if (j + 1 <= n && array[j] < array[j + 1]) {
                     j++;

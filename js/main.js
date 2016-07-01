@@ -228,10 +228,9 @@ var demo;
             this.currentSortLoopFunc = loop1;
         };
         /**
-         * ソートです。
+         * マージソートです。
          */
         Main.prototype.mergeSort = function () {
-            マー;
             var regions = [];
             var stack = [];
             stack.push([0, this.datas.length]);
@@ -255,8 +254,8 @@ var demo;
                     var lastIndex = top_2[1];
                     var middleIndex = Math.floor((firstIndex + lastIndex) / 2);
                     var work = [];
-                    for (var i = firstIndex; i < middleIndex; ++i) {
-                        work.push(this.datas[i]);
+                    for (var i_2 = firstIndex; i_2 < middleIndex; ++i_2) {
+                        work.push(this.datas[i_2]);
                     }
                     var i = firstIndex;
                     var j = 0;
