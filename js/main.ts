@@ -3,7 +3,7 @@
 namespace demo {
     "use strict";
 
-    // ページ読み込み後に実行
+    // ページ読み込み後に実行します。
     window.addEventListener("DOMContentLoaded", () => {
         new Main();
     });
@@ -121,10 +121,10 @@ namespace demo {
             this.isSorting = true;
         }
 
-        //
-
+        /**
+         * バブルソートです。
+         */
         private bubbleSort():void {
-            // バブルソート
             this.currentSortStep = 0;
             this.currentSortLoopFunc = function ():void {
                 const length = this.datas.length - 1;
@@ -142,8 +142,10 @@ namespace demo {
             };
         }
 
+        /**
+         * 挿入ソートです。
+         */
         private insertionSort():void {
-            // 挿入ソート
             this.currentSortStep = 1;
             this.currentSortLoopFunc = function ():void {
                 const length = this.datas.length;
@@ -161,8 +163,10 @@ namespace demo {
             };
         }
 
+        /**
+         * 選択ソートです。
+         */
         private selectionSort():void {
-            // 選択ソート
             this.currentSortStep = 0;
             this.currentSortLoopFunc = function ():void {
                 if (this.currentSortStep < this.datas.length - 1) {
@@ -182,8 +186,10 @@ namespace demo {
             };
         }
 
+        /**
+         * ヒープソートです。
+         */
         private heapSort() {
-            // ヒープソート
             for (let i = 0; i < this.datas.length; ++i) {
                 if (this.datas[i] == 0) {
                     this.swapData(this.datas, 0, i);
@@ -217,8 +223,10 @@ namespace demo {
             this.currentSortLoopFunc = loop1;
         }
 
+        /**
+         * シェルソートです。
+         */
         private shellSort() {
-            // シェルソート
             var h:number;
             const length:number = Math.floor(this.datas.length / 9);
             for (let i = 1; i < length; i = i * 3 + 1) {
@@ -251,8 +259,11 @@ namespace demo {
             this.currentSortLoopFunc = loop1;
         }
 
+        /**
+         * ソートです。
+         */
         private mergeSort() {
-            // マージソート
+            マー
             var regions:number[][] = [];
             var stack:number[][] = [];
             stack.push([0, this.datas.length]);
@@ -302,6 +313,9 @@ namespace demo {
             };
         }
 
+        /**
+         * クイックソートです。
+         */
         private quickSort() {
             this.currentSortLoopFunc = null;
             this.quickSortCPS(0, this.datas.length, () => {
@@ -309,6 +323,9 @@ namespace demo {
             });
         }
 
+        /**
+         * クイックソートの実装です。
+         */
         private quickSortCPS(beginIndex:number, endIndex:number, contFunc:Function):Function {
             if (beginIndex >= endIndex) {
                 return contFunc();
@@ -338,6 +355,9 @@ namespace demo {
             );
         }
 
+        /**
+         * マーカーを作成します。
+         */
         private createMarkers():void {
             this._markerList = [];
             for (let i:number = 0; i < this.datas.length; i++) {
@@ -353,6 +373,9 @@ namespace demo {
             }
         }
 
+        /**
+         * マーカーを更新します。
+         */
         private updateMarkers():void {
             const length:number = this.datas.length;
             for (let i:number = 0; i < length; i++) {
@@ -361,19 +384,27 @@ namespace demo {
             }
         }
 
-        //
+        /**
+         * データ列をシャッフルします。
+         */
         private shuffleArray(array:number[]):void {
             array.sort(function ():number {
                 return Math.floor(Math.random() * 3) - 1
             });
         }
 
+        /**
+         * データを交換します。
+         */
         private swapData(array:number[], i:number, j:number):void {
             var tmp:number = this.datas[i];
             this.datas[i] = this.datas[j];
             this.datas[j] = tmp;
         }
 
+        /**
+         * データ列をヒープします。
+         */
         private downHeap(array:number[], n:number, i:number) {
             var j:number;
             var x:number = array[i];

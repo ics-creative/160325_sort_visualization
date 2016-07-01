@@ -2,7 +2,7 @@
 var demo;
 (function (demo) {
     "use strict";
-    // ページ読み込み後に実行
+    // ページ読み込み後に実行します。
     window.addEventListener("DOMContentLoaded", function () {
         new Main();
     });
@@ -96,9 +96,10 @@ var demo;
             }
             this.isSorting = true;
         };
-        //
+        /**
+         * バブルソートです。
+         */
         Main.prototype.bubbleSort = function () {
-            // バブルソート
             this.currentSortStep = 0;
             this.currentSortLoopFunc = function () {
                 var length = this.datas.length - 1;
@@ -115,8 +116,10 @@ var demo;
                 }
             };
         };
+        /**
+         * 挿入ソートです。
+         */
         Main.prototype.insertionSort = function () {
-            // 挿入ソート
             this.currentSortStep = 1;
             this.currentSortLoopFunc = function () {
                 var length = this.datas.length;
@@ -133,8 +136,10 @@ var demo;
                 }
             };
         };
+        /**
+         * 選択ソートです。
+         */
         Main.prototype.selectionSort = function () {
-            // 選択ソート
             this.currentSortStep = 0;
             this.currentSortLoopFunc = function () {
                 if (this.currentSortStep < this.datas.length - 1) {
@@ -153,8 +158,10 @@ var demo;
                 }
             };
         };
+        /**
+         * ヒープソートです。
+         */
         Main.prototype.heapSort = function () {
-            // ヒープソート
             for (var i_1 = 0; i_1 < this.datas.length; ++i_1) {
                 if (this.datas[i_1] == 0) {
                     this.swapData(this.datas, 0, i_1);
@@ -185,8 +192,10 @@ var demo;
             };
             this.currentSortLoopFunc = loop1;
         };
+        /**
+         * シェルソートです。
+         */
         Main.prototype.shellSort = function () {
-            // シェルソート
             var h;
             var length = Math.floor(this.datas.length / 9);
             for (var i = 1; i < length; i = i * 3 + 1) {
@@ -218,8 +227,11 @@ var demo;
             };
             this.currentSortLoopFunc = loop1;
         };
+        /**
+         * ソートです。
+         */
         Main.prototype.mergeSort = function () {
-            // マージソート
+            マー;
             var regions = [];
             var stack = [];
             stack.push([0, this.datas.length]);
@@ -266,6 +278,9 @@ var demo;
                 }
             };
         };
+        /**
+         * クイックソートです。
+         */
         Main.prototype.quickSort = function () {
             var _this = this;
             this.currentSortLoopFunc = null;
@@ -273,6 +288,9 @@ var demo;
                 _this.isSorting = false;
             });
         };
+        /**
+         * クイックソートの実装です。
+         */
         Main.prototype.quickSortCPS = function (beginIndex, endIndex, contFunc) {
             var _this = this;
             if (beginIndex >= endIndex) {
@@ -297,6 +315,9 @@ var demo;
                 };
             });
         };
+        /**
+         * マーカーを作成します。
+         */
         Main.prototype.createMarkers = function () {
             this._markerList = [];
             for (var i = 0; i < this.datas.length; i++) {
@@ -311,6 +332,9 @@ var demo;
                 marker.y = Main.GRAPH_HEIGHT - i * Main.GRAPH_HEIGHT / Main.DATA_NUM;
             }
         };
+        /**
+         * マーカーを更新します。
+         */
         Main.prototype.updateMarkers = function () {
             var length = this.datas.length;
             for (var i = 0; i < length; i++) {
@@ -318,17 +342,25 @@ var demo;
                 marker.x = i * Main.GRAPH_WIDTH / Main.DATA_NUM;
             }
         };
-        //
+        /**
+         * データ列をシャッフルします。
+         */
         Main.prototype.shuffleArray = function (array) {
             array.sort(function () {
                 return Math.floor(Math.random() * 3) - 1;
             });
         };
+        /**
+         * データを交換します。
+         */
         Main.prototype.swapData = function (array, i, j) {
             var tmp = this.datas[i];
             this.datas[i] = this.datas[j];
             this.datas[j] = tmp;
         };
+        /**
+         * データ列をヒープします。
+         */
         Main.prototype.downHeap = function (array, n, i) {
             var j;
             var x = array[i];
